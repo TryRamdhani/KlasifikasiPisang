@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Hasil Deteksi - Deteksi Pisang AI{% endblock %}
+
+{% block content %}
+<div class="results-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="result-icon mb-3">
+                        {% if results.detected %}
+                            <i class="fas fa-check-circle text-success"></i>
+                        {% else %}
+                            <i class="fas fa-exclamation-circle text-warning"></i>
+                        {% endif %}
+                    </div>
+                    <h2 class="fw-bold mb-3">Hasil Deteksi</h2>
+                    <p class="text-muted">
+                        Analisis untuk gambar: <strong>{{ filename }}</strong>
+                    </p>
+                </div>
+
+                {% if results.detected %}
+                <!-- Detection Results -->
+                <div class="results-grid">
+                    <!-- Main Results Card -->
+                    <div class="result-card main-result">
+                        <div class="card-header">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-seedling text-warning me-2"></i>
+                                Pisang Terdeteksi
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="metric-item">
+                                        <div class="metric-label">Tingkat Kepercayaan</div>
+                                        <div class="metric-value">
+                                            <span class="fw-bold text-success">{{ "%.1f" | format(results.confidence * 100) }}%</span>
+                                            <div class="progress mt-2">
+                                                <div class="progress-bar bg-success" style="width: {{ results.confidence * 100 }}%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="metric-item">
+                                        <div class="metric-label">Jumlah Pisang</div>
+                                        <div class="metric-value">
+                                            <span class="fw-bold">{{ results.banana_count }}</span>
+                                            <small class="text-muted">buah</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banana Details -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas fa-info-circle text-info me-2"></i>
+                                Detail Pisang
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Jenis</div>
+                                        <div class="detail-value">{{ results.banana_type }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Kematangan</div>
+                                        <div class="detail-value">
+                                            <span class="badge bg-success">{{ results.ripeness }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Kualitas</div>
+                                        <div class="detail-value">
+                                            <span class="badge bg-info">{{ results.quality }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Information -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas fa-image text-secondary me-2"></i>
+                                Informasi Gambar
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Dimensi</div>
+                                        <div class="detail-value">{{ results.image_info.width }} × {{ results.image_info.height }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Format</div>
+                                        <div class="detail-value">{{ results.image_info.format }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Mode</div>
+                                        <div class="detail-value">{{ results.image_info.mode }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Status</div>
+                                        <div class="detail-value">
+                                            <span class="badge bg-success">Valid</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="result-card recommendations">
+                        <div class="card-header">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas fa-lightbulb text-warning me-2"></i>
+                                Rekomendasi
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="recommendation-list">
+                                {% for recommendation in results.recommendations %}
+                                <li class="recommendation-item">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    {{ recommendation }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- No Detection Results -->
+                <div class="no-detection">
+                    <div class="text-center">
+                        <div class="no-detection-icon mb-4">
+                            <i class="fas fa-search text-muted"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Pisang Tidak Terdeteksi</h4>
+                        <p class="text-muted mb-4">
+                            Maaf, sistem tidak dapat mendeteksi pisang dalam gambar yang Anda upload. 
+                            Pastikan gambar mengandung pisang yang jelas dan terlihat dengan baik.
+                        </p>
+                        <a href="{{ url_for('upload_page') }}" class="btn btn-warning">
+                            <i class="fas fa-redo me-2"></i>
+                            Coba Lagi
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="action-buttons mt-5 text-center">
+                    <a href="{{ url_for('upload_page') }}" class="btn btn-warning btn-lg me-3">
+                        <i class="fas fa-camera me-2"></i>
+                        Deteksi Gambar Lain
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        Kembali ke Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
