@@ -1,23 +1,47 @@
 import os
 import uuid
-from flask import render_template, request, redirect, url_for, flash, jsonify
-from werkzeug.utils import secure_filename
-from PIL import Image
+import json
 import logging
+import numpy as np
+from flask import render_template, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
+from keras.preprocessing import image
+import tensorflow as tf
+from PIL import Image
 from app import app
 
-# Allowed file extensions
+# Konfigurasi
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'}
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Path model dan data
+MODEL_PATH = "model2/mobilenetv2_final.keras"
+CLASS_INDICES_PATH = "model2/class_indices.json"
+BANANA_INFO_PATH = "banana_info.json"
+
+# Load model dan data
+model = tf.keras.models.load_model(MODEL_PATH)
+
+with open(CLASS_INDICES_PATH, "r", encoding="utf-8") as f:
+    class_indices = json.load(f)
+
+with open(BANANA_INFO_PATH, "r", encoding="utf-8") as f:
+    banana_info = json.load(f)
+
+# Mapping indeks ke label
+class_labels = {v: k for k, v in class_indices.items()}
+
 
 def allowed_file(filename):
-    """Check if file extension is allowed"""
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def get_file_info(filepath):
-    """Get basic file information"""
     try:
         with Image.open(filepath) as img:
+            img.load()  # Pastikan bisa di-decode
             return {
                 'width': img.width,
                 'height': img.height,
@@ -28,106 +52,119 @@ def get_file_info(filepath):
         logging.error(f"Error getting file info: {e}")
         return None
 
-def mock_banana_detection(filepath):
-    """
-    Mock banana detection function - replace this with your actual AI model
-    Returns mock detection results
-    """
+
+def detect_banana(filepath):
     try:
         file_info = get_file_info(filepath)
         if not file_info:
             return None
-        
-        # Mock detection results - replace with your actual model inference
-        mock_results = {
+
+        img = image.load_img(filepath, target_size=(224, 224))
+        img_array = image.img_to_array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+
+        prediction = model.predict(img_array)
+        predicted_index = np.argmax(prediction)
+        predicted_label = class_labels[predicted_index]
+        confidence = float(np.max(prediction))
+
+        if confidence < 0.5:
+            return {
+                'detected': False,
+                'confidence': confidence,
+                'banana_type': 'Tidak yakin',
+                'ripeness': 'Tidak Diketahui',
+                'quality': 'Tidak Diketahui',
+                'recommendations': [
+                    'Model tidak yakin dengan jenis pisang.',
+                    f'Tingkat kepercayaan hanya {confidence * 100:.2f}% (< 50%)'
+                ],
+                'image_info': file_info
+            }
+
+        info = banana_info.get(predicted_label, {})
+        return {
             'detected': True,
-            'confidence': 0.87,
-            'banana_count': 2,
-            'banana_type': 'Cavendish',
-            'ripeness': 'Matang',
-            'quality': 'Baik',
-            'recommendations': [
-                'Pisang ini dalam kondisi baik untuk dikonsumsi',
-                'Tingkat kematangan optimal',
-                'Disarankan untuk dimakan dalam 2-3 hari'
-            ],
+            'confidence': confidence,
+            'banana_type': predicted_label.replace("_", " ").title(),
+            'ripeness': info.get('asal', 'Tidak Diketahui'),
+            'quality': info.get('khasiat', 'Tidak Diketahui'),
+            'recommendations': [info.get('manfaat', 'Tidak tersedia')],
             'image_info': file_info
         }
-        
-        return mock_results
+
     except Exception as e:
-        logging.error(f"Error in mock detection: {e}")
+        logging.error(f"Error in detection: {e}", exc_info=True)
         return None
+
 
 @app.route('/')
 def dashboard():
-    """Main dashboard page"""
     return render_template('dashboard.html')
+
 
 @app.route('/upload')
 def upload_page():
-    """Image upload page"""
     return render_template('upload.html')
+
 
 @app.route('/detect', methods=['POST'])
 def detect():
-    """Handle image upload and detection"""
     if 'file' not in request.files:
         flash('Tidak ada file yang dipilih', 'error')
         return redirect(url_for('upload_page'))
-    
+
     file = request.files['file']
-    
+
     if file.filename == '':
         flash('Tidak ada file yang dipilih', 'error')
         return redirect(url_for('upload_page'))
-    
+
     if not allowed_file(file.filename):
-        flash('Format file tidak didukung. Gunakan PNG, JPG, JPEG, GIF, BMP, atau WEBP', 'error')
+        flash('Format file tidak didukung.', 'error')
         return redirect(url_for('upload_page'))
-    
+
     try:
-        # Generate unique filename
         filename = str(uuid.uuid4()) + '_' + secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
-        # Save the file
         file.save(filepath)
-        
-        # Run detection (mock)
-        results = mock_banana_detection(filepath)
-        
-        if results is None:
-            flash('Terjadi kesalahan saat memproses gambar', 'error')
-            # Clean up file
-            if os.path.exists(filepath):
-                os.remove(filepath)
-            return redirect(url_for('upload_page'))
-        
-        # Clean up file after processing
-        if os.path.exists(filepath):
+
+        # Validasi file gambar
+        try:
+            with Image.open(filepath) as img:
+                img.load()
+        except Exception as e:
+            logging.error(f"Invalid image file: {e}")
             os.remove(filepath)
-        
-        return render_template('results.html', results=results, filename=file.filename)
-        
+            flash('File gambar tidak valid atau rusak.', 'error')
+            return redirect(url_for('upload_page'))
+
+        results = detect_banana(filepath)
+        if results is None:
+            flash('Gagal mendeteksi jenis pisang.', 'error')
+            os.remove(filepath)
+            return redirect(url_for('upload_page'))
+
+        return render_template('results.html', results=results, filename=filename)
+
     except Exception as e:
-        logging.error(f"Error in detection: {e}")
-        flash('Terjadi kesalahan saat memproses gambar', 'error')
+        logging.error(f"Error in /detect: {e}", exc_info=True)
+        flash('Terjadi kesalahan saat memproses gambar.', 'error')
         return redirect(url_for('upload_page'))
+
 
 @app.errorhandler(413)
 def too_large(e):
-    """Handle file too large error"""
-    flash('File terlalu besar. Maksimal ukuran file adalah 16MB', 'error')
+    flash('File terlalu besar. Maksimum ukuran adalah 16MB.', 'error')
     return redirect(url_for('upload_page'))
+
 
 @app.errorhandler(404)
 def page_not_found(e):
-    """Handle 404 errors"""
     return render_template('dashboard.html'), 404
+
 
 @app.errorhandler(500)
 def internal_error(e):
-    """Handle 500 errors"""
-    flash('Terjadi kesalahan internal. Silakan coba lagi.', 'error')
+    flash('Terjadi kesalahan internal server.', 'error')
     return redirect(url_for('dashboard'))

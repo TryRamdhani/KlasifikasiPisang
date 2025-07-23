@@ -1,114 +1,139 @@
-{% extends "base.html" %}
-
-{% block title %}Upload Gambar - Deteksi Pisang AI{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Upload Gambar - Deteksi Jenis Pisang
+AI{% endblock %} {% block content %}
 <div class="upload-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <!-- Header -->
-                <div class="text-center mb-5">
-                    <div class="upload-icon mb-3">
-                        <i class="fas fa-camera text-warning"></i>
-                    </div>
-                    <h2 class="fw-bold mb-3">Upload Gambar Pisang</h2>
-                    <p class="text-muted">
-                        Pilih gambar pisang yang ingin Anda analisis. Pastikan gambar jelas dan pisang terlihat dengan baik.
-                    </p>
-                </div>
-
-                <!-- Upload Form -->
-                <div class="upload-card">
-                    <form id="uploadForm" action="{{ url_for('detect') }}" method="post" enctype="multipart/form-data">
-                        <div class="upload-area" id="uploadArea">
-                            <div class="upload-content">
-                                <div class="upload-icon-large mb-3">
-                                    <i class="fas fa-cloud-upload-alt text-muted"></i>
-                                </div>
-                                
-                                <h5 class="mb-3">Drag & Drop gambar di sini</h5>
-                                <p class="text-muted mb-4">atau klik untuk memilih file</p>
-                                
-                                <input type="file" 
-                                       name="file" 
-                                       id="fileInput" 
-                                       accept="image/*" 
-                                       required 
-                                       class="file-input">
-                                
-                                <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('fileInput').click()">
-                                    <i class="fas fa-folder-open me-2"></i>
-                                    Pilih File
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- File Preview -->
-                        <div id="filePreview" class="file-preview" style="display: none;">
-                            <div class="preview-content">
-                                <img id="previewImage" src="" alt="Preview" class="preview-image">
-                                <div class="preview-info">
-                                    <h6 id="fileName" class="fw-bold mb-2"></h6>
-                                    <p id="fileSize" class="text-muted small mb-3"></p>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="removeFile()">
-                                        <i class="fas fa-times me-1"></i>
-                                        Hapus
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Submit Button -->
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-warning btn-lg px-5 py-3 fw-bold" id="detectBtn" disabled>
-                                <i class="fas fa-search me-2"></i>
-                                <span id="btnText">Deteksi Sekarang</span>
-                                <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2" style="display: none;"></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Upload Guidelines -->
-                <div class="upload-guidelines mt-5">
-                    <h6 class="fw-bold mb-3">
-                        <i class="fas fa-info-circle text-info me-2"></i>
-                        Panduan Upload
-                    </h6>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="guideline-item">
-                                <i class="fas fa-check text-success me-2"></i>
-                                <span>Format: JPG, PNG, GIF, BMP, WEBP</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="guideline-item">
-                                <i class="fas fa-check text-success me-2"></i>
-                                <span>Ukuran maksimal: 16MB</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="guideline-item">
-                                <i class="fas fa-check text-success me-2"></i>
-                                <span>Gambar harus jelas dan fokus</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="guideline-item">
-                                <i class="fas fa-check text-success me-2"></i>
-                                <span>Pisang harus terlihat dengan baik</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Header -->
+        <div class="text-center mb-5">
+          <div class="upload-icon mb-3">
+            <i class="fas fa-camera text-warning"></i>
+          </div>
+          <h2 class="fw-bold mb-3">Upload Gambar Pisang</h2>
+          <p class="text-muted">
+            Pilih gambar pisang yang ingin Anda analisis. Pastikan gambar jelas
+            dan pisang terlihat dengan baik.
+          </p>
         </div>
-    </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
+        <!-- Upload Form -->
+        <div class="upload-card">
+          <form
+            id="uploadForm"
+            action="{{ url_for('detect') }}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="upload-area" id="uploadArea">
+              <div class="upload-content">
+                <div class="upload-icon-large mb-3">
+                  <i class="fas fa-cloud-upload-alt text-muted"></i>
+                </div>
+
+                <h5 class="mb-3">Drag & Drop gambar di sini</h5>
+                <p class="text-muted mb-4">atau klik untuk memilih file</p>
+
+                <input
+                  type="file"
+                  name="file"
+                  id="fileInput"
+                  accept="image/*"
+                  required
+                  class="file-input"
+                />
+
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  onclick="document.getElementById('fileInput').click()"
+                >
+                  <i class="fas fa-folder-open me-2"></i>
+                  Pilih File
+                </button>
+              </div>
+            </div>
+
+            <!-- File Preview -->
+            <div id="filePreview" class="file-preview" style="display: none">
+              <div class="preview-content">
+                <img
+                  id="previewImage"
+                  src=""
+                  alt="Preview"
+                  class="preview-image"
+                />
+                <div class="preview-info">
+                  <h6 id="fileName" class="fw-bold mb-2"></h6>
+                  <p id="fileSize" class="text-muted small mb-3"></p>
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    onclick="removeFile()"
+                  >
+                    <i class="fas fa-times me-1"></i>
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+              <button
+                type="submit"
+                class="btn btn-warning btn-lg px-5 py-3 fw-bold"
+                id="detectBtn"
+                disabled
+              >
+                <i class="fas fa-search me-2"></i>
+                <span id="btnText">Deteksi Sekarang</span>
+                <span
+                  id="btnSpinner"
+                  class="spinner-border spinner-border-sm ms-2"
+                  style="display: none"
+                ></span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Upload Guidelines -->
+        <div class="upload-guidelines mt-5">
+          <h6 class="fw-bold mb-3">
+            <i class="fas fa-info-circle text-info me-2"></i>
+            Panduan Upload
+          </h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="guideline-item">
+                <i class="fas fa-check text-success me-2"></i>
+                <span>Format: JPG, PNG, GIF, BMP, WEBP</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="guideline-item">
+                <i class="fas fa-check text-success me-2"></i>
+                <span>Ukuran maksimal: 16MB</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="guideline-item">
+                <i class="fas fa-check text-success me-2"></i>
+                <span>Gambar harus jelas dan fokus</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="guideline-item">
+                <i class="fas fa-check text-success me-2"></i>
+                <span>Pisang harus terlihat dengan baik</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 {% endblock %}

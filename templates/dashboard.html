@@ -1,124 +1,137 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard - Deteksi Pisang AI{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Dashboard - Deteksi Jenis Pisang AI{%
+endblock %} {% block content %}
 <div class="hero-section">
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <!-- Main Hero Content -->
-                <div class="hero-content">
-                    <div class="hero-icon mb-4">
-                        <i class="fas fa-seedling text-warning"></i>
-                    </div>
-                    
-                    <h1 class="display-4 fw-bold mb-4">
-                        Deteksi Pisang AI
-                    </h1>
-                    
-                    <p class="lead mb-5 text-muted">
-                        Sistem deteksi pisang menggunakan teknologi kecerdasan buatan yang canggih. 
-                        Upload gambar pisang Anda dan dapatkan analisis lengkap tentang jenis, kematangan, dan kualitas pisang.
-                    </p>
-                    
-                    <!-- Main CTA Button -->
-                    <div class="cta-section">
-                        <a href="{{ url_for('upload_page') }}" class="btn btn-warning btn-lg px-5 py-3 fw-bold">
-                            <i class="fas fa-camera me-2"></i>
-                            Deteksi Sekarang
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-8">
+        <!-- Main Hero Content -->
+        <div class="hero-content">
+          <div class="hero-icon mb-4">
+            <i class="fas fa-seedling text-warning"></i>
+          </div>
+
+          <h1 class="display-4 fw-bold mb-4">Deteksi Jenis Pisang AI</h1>
+
+          <p class="lead mb-5 text-muted">
+            Sistem deteksi jenis pisang menggunakan pendekatan teknologi
+            kecerdasan buatan. Upload gambar pisang Anda dan dapatkan analisis
+            lengkap tentang jenis pisang, asal pisang dan manfaat pisang
+            tersebut.
+          </p>
+
+          <!-- Main CTA Button -->
+          <div class="cta-section">
+            <a
+              href="{{ url_for('upload_page') }}"
+              class="btn btn-warning btn-lg px-5 py-3 fw-bold"
+            >
+              <i class="fas fa-camera me-2"></i>
+              Deteksi Sekarang
+            </a>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Features Section -->
 <div class="features-section">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-eye text-info"></i>
-                    </div>
-                    <h5 class="fw-bold mb-3">Deteksi Akurat</h5>
-                    <p class="text-muted">
-                        Menggunakan model AI yang telah dilatih untuk mengenali berbagai jenis pisang dengan tingkat akurasi tinggi.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-clock text-success"></i>
-                    </div>
-                    <h5 class="fw-bold mb-3">Analisis Cepat</h5>
-                    <p class="text-muted">
-                        Dapatkan hasil analisis dalam hitungan detik. Proses yang cepat dan efisien untuk kebutuhan Anda.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-chart-line text-warning"></i>
-                    </div>
-                    <h5 class="fw-bold mb-3">Analisis Mendalam</h5>
-                    <p class="text-muted">
-                        Mendapatkan informasi detail tentang jenis, tingkat kematangan, kualitas, dan rekomendasi untuk pisang Anda.
-                    </p>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card text-center">
+          <div class="feature-icon mb-3">
+            <i class="fas fa-eye text-info"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Deteksi Akurat</h5>
+          <p class="text-muted">
+            Menggunakan model AI yang telah dilatih untuk mengenali jenis pisang
+            dengan tingkat akurasi tinggi, terfokus pada 5 jenis pisang yaitu
+            pisang barangan, kepok, uli, tanduk dan mas.
+          </p>
         </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card text-center">
+          <div class="feature-icon mb-3">
+            <i class="fas fa-clock text-success"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Analisis Cepat</h5>
+          <p class="text-muted">
+            Dapatkan hasil analisis dalam hitungan detik. Proses yang cepat dan
+            efisien untuk kebutuhan Anda.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card text-center">
+          <div class="feature-icon mb-3">
+            <i class="fas fa-chart-line text-warning"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Analisis Mendalam</h5>
+          <p class="text-muted">
+            Mendapatkan informasi jenis pisang, asal pisang tersebut, manfaat,
+            dan rekomendasi untuk pisang Anda.
+          </p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- How it Works Section -->
 <div class="how-it-works-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="fw-bold mb-5">Cara Menggunakan</h2>
-                
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="step-card">
-                            <div class="step-number mb-3">1</div>
-                            <h6 class="fw-bold mb-2">Upload Gambar</h6>
-                            <p class="text-muted small">Pilih dan upload gambar pisang yang ingin dianalisis</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <div class="step-card">
-                            <div class="step-number mb-3">2</div>
-                            <h6 class="fw-bold mb-2">Proses AI</h6>
-                            <p class="text-muted small">AI akan menganalisis gambar dan mengidentifikasi pisang</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <div class="step-card">
-                            <div class="step-number mb-3">3</div>
-                            <h6 class="fw-bold mb-2">Lihat Hasil</h6>
-                            <p class="text-muted small">Dapatkan hasil analisis lengkap dan rekomendasi</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-5">
-                    <a href="{{ url_for('upload_page') }}" class="btn btn-outline-warning btn-lg">
-                        <i class="fas fa-arrow-right me-2"></i>
-                        Mulai Deteksi
-                    </a>
-                </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="fw-bold mb-5">Cara Menggunakan</h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="step-card">
+              <div class="step-number mb-3">1</div>
+              <h6 class="fw-bold mb-2">Upload Gambar</h6>
+              <p class="text-muted small">
+                Pilih dan upload gambar pisang yang ingin deteksi
+              </p>
             </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="step-card">
+              <div class="step-number mb-3">2</div>
+              <h6 class="fw-bold mb-2">Proses AI</h6>
+              <p class="text-muted small">
+                Sistem akan menganalisis gambar dan mengidentifikasi pisang
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="step-card">
+              <div class="step-number mb-3">3</div>
+              <h6 class="fw-bold mb-2">Lihat Hasil</h6>
+              <p class="text-muted small">
+                Dapatkan hasil analisis lengkap dan rekomendasi
+              </p>
+            </div>
+          </div>
         </div>
+
+        <div class="mt-5">
+          <a
+            href="{{ url_for('upload_page') }}"
+            class="btn btn-outline-warning btn-lg"
+          >
+            <i class="fas fa-arrow-right me-2"></i>
+            Mulai Deteksi
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

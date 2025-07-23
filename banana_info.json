@@ -1,0 +1,62 @@
+{
+  "barangan_matang": {
+    "manfaat": "Membantu pemulihan tubuh dan meningkatkan energi.",
+    "asal": "Sumatera Utara",
+    "khasiat": "Kaya vitamin B dan karbohidrat."
+  },
+  "barangan_muda": {
+    "manfaat": "Membantu pemulihan tubuh dan meningkatkan energi.",
+    "asal": "Sumatera Utara",
+    "khasiat": "Kaya vitamin B dan karbohidrat."
+  },
+  "bukan_pisang": {
+    "manfaat": "Bukan pisang - tidak tersedia informasi.",
+    "asal": "Tidak diketahui",
+    "khasiat": "Tidak berlaku."
+  },
+  "kepok_matang": {
+    "manfaat": "Bisa diolah jadi keripik, tinggi serat.",
+    "asal": "Kalimantan dan Sulawesi",
+    "khasiat": "Baik untuk diet dan diabetes."
+  },
+  "kepok_muda": {
+    "manfaat": "Bisa diolah jadi keripik, tinggi serat.",
+    "asal": "Kalimantan dan Sulawesi",
+    "khasiat": "Baik untuk diet dan diabetes."
+  },
+  "mas_matang": {
+    "manfaat": "Meningkatkan nafsu makan anak dan sumber energi.",
+    "asal": "Jawa Barat",
+    "khasiat": "Rasa manis alami, cocok untuk balita."
+  },
+  "mas_muda": {
+    "manfaat": "Meningkatkan nafsu makan anak dan sumber energi.",
+    "asal": "Jawa Barat",
+    "khasiat": "Rasa manis alami, cocok untuk balita."
+  },
+  "pisang_lain": {
+    "manfaat": "Jenis pisang lainnya - informasi terbatas.",
+    "asal": "Beragam wilayah",
+    "khasiat": "Khasiat bervariasi tergantung jenis."
+  },
+  "tanduk_matang": {
+    "manfaat": "Cocok untuk gorengan dan olahan.",
+    "asal": "Jawa",
+    "khasiat": "Kaya karbohidrat kompleks."
+  },
+  "tanduk_muda": {
+    "manfaat": "Cocok untuk gorengan dan olahan.",
+    "asal": "Jawa",
+    "khasiat": "Kaya karbohidrat kompleks."
+  },
+  "uli_matang": {
+    "manfaat": "Baik untuk pencernaan dan membuat keripik.",
+    "asal": "Jawa Barat",
+    "khasiat": "Tekstur padat, cocok untuk cemilan."
+  },
+  "uli_muda": {
+    "manfaat": "Baik untuk pencernaan dan membuat keripik.",
+    "asal": "Jawa Barat",
+    "khasiat": "Tekstur padat, cocok untuk cemilan."
+  }
+}

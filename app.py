@@ -3,9 +3,6 @@ import logging
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
-
 # Create the app
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "banana-detection-secret-key")
