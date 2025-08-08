@@ -1,6 +1,5 @@
 flask
 gunicorn
-Flask
 Werkzeug
 keras
 tensorflow
